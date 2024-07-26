@@ -1,1 +1,361 @@
-# Web
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://apis.google.com;">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="Referrer-Policy" content="no-referrer-when-downgrade">
+    <meta http-equiv="Strict-Transport-Security" content="max-age=63072000; includeSubDomains; preload">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(self), microphone=()">
+    <meta http-equiv="Expect-CT" content="max-age=86400, enforce">
+    <title>Test para tu Aroma Ideal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gotu&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            background-color: #000;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .title {
+            color: #fff;
+            text-align: center;
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-family: 'Gotu', sans-serif;
+            animation: slideInFromTop 1.5s ease-in-out;
+        }
+        @keyframes slideInFromTop {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+        h1 {
+            color: #d4af37;
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: slideInFromBottom 1.5s ease-in-out;
+        }
+        @keyframes slideInFromBottom {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .aviso, .accordion, #result {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-style: italic;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        .accordion-button, button {
+            background-color: #000;
+            color: #d4af37;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            text-align: left;
+            width: 100%;
+            border-radius: 5px;
+            font-family: 'Gotu', sans-serif;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
+        }
+        .accordion-button:hover, button:hover {
+            background-color: #d4af37;
+            color: #000;
+            transform: scale(1.05);
+        }
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            border-top: 1px solid #d4af37;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .accordion-content.active {
+            display: block;
+            animation: expand 0.5s ease-in-out;
+        }
+        @keyframes expand {
+            from { max-height: 0; opacity: 0; }
+            to { max-height: 1000px; opacity: 1; }
+        }
+        .options {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        .option {
+            margin: 5px 10px;
+            flex: 1 0 45%;
+        }
+        #result {
+            margin-top: 30px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .emoji {
+            font-size: 1.5em;
+            margin: 0 5px;
+        }
+        #submitTest {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">EUPHORIA SCENTS</div>
+    <h1>✨ Test para tu Aroma Ideal ✨</h1>
+    <div class="aviso">
+        <p>🌟 Recuerda que estos datos no definen tu personalidad y puedes escoger el que más te encante. Si no sabes qué escoger, este test te ayudará a orientarte. ¡Recuerda ser tú mismo/a! 🌟</p>
+    </div>
+    <div id="test">
+        <!-- Las preguntas se generarán aquí dinámicamente -->
+    </div>
+    <button id="submitTest">🔮 Descubre tu aroma ideal 🔮</button>
+    <div id="result"></div>
+
+    <script>
+        const questions = [
+            {
+                question: "¿Qué estación te gusta más? 🌸☀️🍂❄️",
+                options: ["Primavera 🌸", "Verano ☀️", "Otoño 🍂", "Invierno ❄️", "Todas 🌈"]
+            },
+            {
+                question: "¿Cómo te describes? 🧐",
+                options: ["Extrovertido/a 🎉", "Introvertido/a 📚", "Creativo/a 🎨", "Organizado/a 📊", "Aventurero/a 🚀"]
+            },
+            {
+                question: "¿Dónde te sientes más a gusto? 🏝️",
+                options: ["Playa 🏖️", "Bosque 🌳", "Cafetería ☕", "Fiesta 🎉", "Montaña 🏔️"]
+            },
+            {
+                question: "¿Qué color te llama más? 🎨",
+                options: ["Rojo ❤️", "Azul 💙", "Verde 💚", "Púrpura 💜", "Dorado 💛"]
+            },
+            {
+                question: "¿Qué música prefieres? 🎧",
+                options: ["Clásica 🎻", "Pop 🎤", "Jazz 🎷", "Rock 🎸", "Electrónica 🎧"]
+            },
+            {
+                question: "¿A qué hora del día te gusta más? ⏰",
+                options: ["Amanecer 🌅", "Tarde 🌞", "Atardecer 🌇", "Noche 🌙", "Mediodía ☀️"]
+            },
+            {
+                question: "¿Qué textura de ropa prefieres? 👚",
+                options: ["Seda 🧣", "Algodón 👕", "Lana 🧥", "Cuero 🧥", "Lino 👗"]
+            },
+            {
+                question: "¿Qué tipo de vacaciones te gustan? 🏖️",
+                options: ["Ciudad histórica 🏛️", "Resort de lujo 🏨", "Camping 🏕️", "Aventura 🧗‍♀️", "Spa 💆‍♀️"]
+            },
+            {
+                question: "¿Qué sabor en postre prefieres? 🍰",
+                options: ["Chocolate 🍫", "Vainilla 🍦", "Frutas 🍋", "Caramelo 🍯", "Especias 🌶️"]
+            },
+            {
+                question: "¿Qué tipo de arte te gusta? 🎨",
+                options: ["Pinturas 🖼️", "Esculturas 🗿", "Fotografía 📷", "Arte digital 💻", "Arte clásico 🏛️"]
+            },
+            {
+                question: "¿Qué cualidad valoras más en alguien? 🤝",
+                options: ["Inteligencia 🧠", "Humor 😄", "Amabilidad 💖", "Confianza 🤝", "Creatividad 💡"]
+            },
+            {
+                question: "¿Qué tipo de libros te gustan? 📚",
+                options: ["Románticos 💕", "Suspenso 😱", "Ciencia ficción 🚀", "Poesía 📜", "Biografías 👤"]
+            },
+            {
+                question: "¿Qué animal te gusta más? 🐾",
+            		   options: ["Tigre 🐯", "Delfín 🐬", "Búho 🦉", "Mariposa 🦋", "Lobo 🐺"]
+            },
+            {
+                question: "¿Qué cocina prefieres? 🍽️",
+                options: ["Italiana 🍝", "Japonesa 🍣", "Francesa 🥐", "Mexicana 🌮", "India 🍛"]
+            },
+            {
+                question: "¿Qué elemento natural te atrae más? 🌍",
+                options: ["Fuego 🔥", "Agua 💧", "Tierra 🌱", "Aire 💨", "Metal ⚙️"]
+            }
+        ];
+
+        const notasPerfume = [
+            { 
+                notas: "florales y cítricas 🌸🍋", 
+                descripcion: "frescas y vibrantes, con toques de jazmín, rosa y bergamota",
+                emoji: "🌺🍊"
+            },
+            { 
+                notas: "amaderadas y especiadas 🌳🌶️", 
+                descripcion: "cálidas y envolventes, con notas de sándalo, cedro y cardamomo",
+                emoji: "🌲🌰"
+            },
+            { 
+                notas: "acuáticas y frescas 🌊🍃", 
+                descripcion: "ligeras y refrescantes, con notas de brisa marina, pepino y menta",
+                emoji: "🐳🍉"
+            },
+            { 
+                notas: "orientales y gourmand 🏵️🍯", 
+                descripcion: "sensuales y dulces, con toques de vainilla y ámbar",
+                emoji: "🌹🍂"
+            },
+            { 
+                notas: "herbales y verdes 🌿🍃", 
+                descripcion: "naturales y vigorizantes, con notas de hierba recién cortada, tomillo y vetiver",
+                emoji: "🍀🌱"
+            },
+            { 
+                notas: "cítricas y especiadas 🍋🌶️", 
+                descripcion: "brillantes y energizantes, con notas de limón, jengibre y pimienta rosa",
+                emoji: "🍋🌶️"
+            },
+            { 
+                notas: "afrutadas y jugosas 🍉🍓", 
+                descripcion: "dulces y frescas, con notas de sandía, fresa y melocotón",
+                emoji: "🍉🍓"
+            },
+            { 
+                notas: "florales y almizcladas 🌸🕊️", 
+                descripcion: "suaves y envolventes, con notas de almizcle blanco, gardenia y peonía",
+                emoji: "🌸🕊️"
+            },
+            { 
+                notas: "orientales y ambarinas 🏵️🌟", 
+                descripcion: "exóticas y cálidas, con notas de ámbar, incienso y mirra",
+                emoji: "🏵️🌟"
+            },
+            { 
+                notas: "amaderadas y terrosas 🌲🍂", 
+                descripcion: "robustas y naturales, con notas de vetiver, musgo de roble y madera de oud",
+                emoji: "🌲🍂"
+            },
+            { 
+                notas: "gourmand y dulces 🍫🍦", 
+                descripcion: "irresistibles y deliciosas, con notas de chocolate, caramelo y vainilla",
+                emoji: "🍫🍦"
+            },
+            { 
+                notas: "verdes y acuáticas 🌿💧", 
+                descripcion: "refrescantes y ligeras, con notas de pepino, té verde y nenúfar",
+                emoji: "🌿💧"
+            },
+            { 
+                notas: "florales y frutales 🌸🍎", 
+                descripcion: "radiantes y encantadoras, con notas de manzana, flor de azahar y freesia",
+                emoji: "🌸🍎"
+            }
+        ];
+
+        function generateTest() {
+            const testContainer = document.getElementById('test');
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'accordion';
+                questionDiv.innerHTML = `
+                    <button class="accordion-button">${index + 1}. ${q.question}</button>
+                    <div class="accordion-content">
+                        <div class="options">
+                            ${q.options.map((option, i) => `
+                                <label class="option">
+                                    <input type="radio" name="q${index}" value="${i}">
+                                    ${option}
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                testContainer.appendChild(questionDiv);
+            });
+
+            const accButtons = document.querySelectorAll('.accordion-button');
+            accButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    toggleAccordion(button);
+                });
+            });
+        }
+
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const isActive = content.classList.contains('active');
+
+            document.querySelectorAll('.accordion-content').forEach(content => {
+                content.classList.remove('active');
+                content.style.display = 'none';
+            });
+
+            if (!isActive) {
+                content.classList.add('active');
+                content.style.display = 'block';
+            }
+        }
+
+        function getResult() {
+            const answers = [];
+            questions.forEach((_, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                answers.push(selected ? parseInt(selected.value) : -1);
+            });
+
+            if (answers.includes(-1)) {
+                alert("Por favor, responde todas las preguntas. ¡Tu aroma ideal te espera! 🌟");
+                return;
+            }
+
+            const sum = answers.reduce((a, b) => a + b, 0);
+            const notasIndex = sum % notasPerfume.length;
+            const notasRecomendadas = notasPerfume[notasIndex];
+
+            displayResult(notasRecomendadas, notasIndex);
+        }
+
+        function displayResult(notas, index) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <h2>🎉 ¡Tu Aroma Ideal! 🎉</h2>
+                <p>${notas.emoji} De acuerdo a tus respuestas, te recomendamos un perfume con notas ${notas.notas}. ${notas.emoji}</p>
+                <p>✨ Estas notas son ${notas.descripcion}. ✨</p>
+                <p>🌟 Este tipo de fragancia refleja tu personalidad única y tus preferencias. 🌟</p>
+                <p>💖 La combinación de tus respuestas sugiere que aprecias ${getPersonalityTrait(index)} y estas notas complementarán perfectamente tu estilo personal. 💖</p>
+                <p>🌈 Recuerda, esta es solo una sugerencia. ¡Lo más importante es que elijas un perfume que te haga sentir auténtico/a y feliz! 🌈</p>
+            `;
+        }
+
+        function getPersonalityTrait(index) {
+            const traits = [
+                "la frescura y la vitalidad 🌱💫",
+                "la sofisticación y la calidez 🎭🔥",
+                "la ligereza y la pureza 🍃💎",
+                "el misterio y la sensualidad 🌙✨",
+                "la naturalidad y la energía 🌿⚡",
+                "la energía y el brillo 🌞⚡",
+                "la dulzura y la frescura 🍬🌺",
+                "la suavidad y la elegancia 🕊️✨",
+                "el exotismo y la calidez 🌴🔥",
+                "la robustez y la naturalidad 🌳🍂",
+                "la delicadeza y el encanto 🌷✨",
+                "la frescura y la ligereza 🍃💧"
+            ];
+            return traits[index];
+        }
+
+        document.getElementById('submitTest').addEventListener('click', getResult);
+
+        generateTest();
+    </script>
+</body>
+</html>
